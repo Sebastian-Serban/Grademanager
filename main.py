@@ -46,7 +46,7 @@ class Window(tk.Tk):
 
 class Grade(tk.Frame):
     def __init__(self, parent, window):
-        super().__init__(master=parent)
+        super().__init__(master=parent, relief="raised")
         self.weight = 0.0
         self.grade = 0.0
         self.name = None
@@ -54,16 +54,18 @@ class Grade(tk.Frame):
         self.window = window
         self.window.add()
 
-        self.id = tk.Label(self, text=f"{len(self.window.grades)+1}", font='Helvetica 15', height=3, width=6, relief="raised")
-        self.id.grid(column=0, row=0)
+        self.id = tk.Label(self, text=f"{len(self.window.grades) + 1}", font='Helvetica 15', width=6, relief="raised")
+        self.id.grid(column=0, row=0, sticky="ns")
 
-        self.grade_container = tk.Frame(self, relief="raised", bg="red")
+        self.grade_container = tk.Frame(self, relief="raised", padx=10, bd=2)
         self.grade_container.grid(column=1, row=0)
 
-        self.label = tk.Label(self.grade_container, text=f"Note", font='Helvetica 15', height=2, bg="red")
-        self.grade_field = tk.Entry(self.grade_container, name="note", font='Helvetica 15', width=10)
-        self.label.grid(column=0, row=0)
-        self.grade_field.grid(column=1, row=0)
+        self.label = tk.Label(self.grade_container, text="Grade", font='Helvetica 15')
+        self.grade_field = tk.Entry(self.grade_container, name="note", font='Helvetica 15', width=7)
+        self.label.grid(column=0, row=0, padx=(0, 12))
+        self.grade_field.grid(column=1, row=0, padx=(0, 7))
+
+
 
 
 
