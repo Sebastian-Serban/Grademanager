@@ -55,18 +55,19 @@ class SubjectContainer(tk.Frame):
         self.name = None
         self.window = window
 
-        self.id = tk.Label(self, text=f"{len(self.window.grades) + 1}", font='Helvetica 15', width=6, relief="raised")
+        self.id = tk.Label(self, text=f"{len(self.window.subjects) + 1}", font='Helvetica 15', width=6, relief="raised")
         self.id.grid(column=0, row=0, sticky="ns")
 
         self.name_container = tk.Frame(self, relief="raised", padx=10, bd=2)
-        self.name_container.grid(column=1, row=0, sticky="e")
+        self.name_container.grid(column=1, row=0)
 
-        self.name_label = tk.Label(self.name_container, text="Title", font='Helvetica 15')
+        self.name_label = tk.Label(self.name_container, text="Subject", font='Helvetica 15')
         self.namevar = tk.StringVar(value="")
         self.namevar.trace("w", self.update)
-        self.name_field = tk.Entry(self.name_container, name="name", font='Helvetica 15', textvariable=self.namevar)
+        self.name_field = tk.Entry(self.name_container, name="name", font='Helvetica 15', textvariable=self.namevar, state="readonly")
+        self.name_field.config(readonlybackground="white")
         self.name_label.grid(column=0, row=0, padx=(0, 12))
-        self.name_field.grid(column=1, row=0, padx=(0, 7), sticky="e")
+        self.name_field.grid(column=1, row=0, padx=(0, 7))
 
         self.grade_container = tk.Frame(self, relief="raised", padx=10, bd=2)
         self.grade_container.grid(column=2, row=0)
@@ -89,11 +90,6 @@ class SubjectContainer(tk.Frame):
                                      textvariable=self.weightvar)
         self.weight_label.grid(column=0, row=0, padx=(0, 12))
         self.weight_field.grid(column=1, row=0, padx=(0, 7))
-
-
-
-
-
 
 
 if __name__ == "__main__":

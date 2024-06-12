@@ -10,11 +10,11 @@ class Subject(tk.Tk):
         self.name = ""
 
         self.title(self.name)
-        self.geometry('963x750')
+        self.geometry('950x750')
         self.resizable(False, False)
 
         self.header = tk.Frame(self)
-        self.header.grid(columnspan=1, rowspan=2)
+        self.header.grid(columnspan=1, rowspan=2, pady=10)
         self.label = tk.Label(self.header, text=self.name, font=25)
         self.label.grid(column=0, row=0)
 
@@ -80,6 +80,7 @@ class Subject(tk.Tk):
             self.result.set(f"{res}")
         else:
             self.result.set(f"")
+
 
 
 if __name__ == "__main__":
