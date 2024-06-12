@@ -4,7 +4,7 @@ from datetime import date
 
 class Grade(tk.Frame):
     def __init__(self, parent, window):
-        super().__init__(master=parent, relief="raised", bg="blue")
+        super().__init__(master=parent)
         self.weight = 0.0
         self.grade = 0.0
         self.name = None

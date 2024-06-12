@@ -5,13 +5,17 @@ from grade import Grade
 class Subject(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title('Notenrechner')
+        self.weight = 0.0
+        self.grade = 0.0
+        self.name = ""
+
+        self.title(self.name)
         self.geometry('963x750')
         self.resizable(False, False)
 
         self.header = tk.Frame(self)
-        self.header.grid(columnspan=1, rowspan=2, ipadx=True)
-        self.label = tk.Label(self.header, text='welcome to the grademanager', font=25)
+        self.header.grid(columnspan=1, rowspan=2)
+        self.label = tk.Label(self.header, text=self.name, font=25)
         self.label.grid(column=0, row=0)
 
 
@@ -72,6 +76,7 @@ class Subject(tk.Tk):
         if grade_sum and weight_sum:
             res = grade_sum / weight_sum
             res = 0.5 * round(res / 0.5)
+            self.grade = res
             self.result.set(f"{res}")
         else:
             self.result.set(f"")
