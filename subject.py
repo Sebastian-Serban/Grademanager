@@ -1,55 +1,73 @@
 import tkinter as tk
 from grade import Grade
+import json
 
 
-class Subject(tk.Tk):
-    def __init__(self):
+class Subject(tk.Toplevel):
+    def __init__(self, name):
         super().__init__()
         self.weight = 0.0
         self.grade = 0.0
-        self.name = ""
+        self.name = name
 
         self.title(self.name)
         self.geometry('950x750')
         self.resizable(False, False)
 
         self.header = tk.Frame(self)
-        self.header.grid(columnspan=1, rowspan=2, pady=10)
-        self.label = tk.Label(self.header, text=self.name, font=25)
+        self.header.grid(columnspan=1, rowspan=2, pady=(0, 10))
+        self.label = tk.Label(self.header, text=self.name, font='Helvetica 25')
         self.label.grid(column=0, row=0)
-
-
 
         # Buttons
         self.button_container = tk.Frame(self.header)
         self.button_container.grid(column=0, row=1)
 
-        self.add_button = tk.Button(self.button_container, text='add grade')
+        self.add_button = tk.Button(self.button_container, text='Add Grade')
         self.add_button['command'] = self.add
         self.add_button.grid(column=0, row=0)
 
-        self.remove_button = tk.Button(self.button_container, text='remove grade')
+        self.remove_button = tk.Button(self.button_container, text='Remove Grade')
         self.remove_button['command'] = self.remove
         self.remove_button.grid(column=1, row=0)
 
         self.result = tk.StringVar()
-        self.average_label = tk.Label(self.button_container, text="average : ", font=20)
+        self.average_label = tk.Label(self.button_container, text="Average: ", font=20)
         self.average = tk.Label(self.button_container, textvariable=self.result, width=10, font=20, bg="white")
         self.average_label.grid(column=2, row=0)
         self.average.grid(column=3, row=0)
 
-        #Grades container
+        # Grades container
         self.frame = tk.Frame(self)
         self.frame.grid(sticky="we")
 
-        #Grades
+        # Grades
         self.grades = []
         self.setup()
 
+        # Save button
+        self.save_button = tk.Button(self, text='Save', font='Helvetica 15', command=self.save)
+        self.save_button.grid()
+
     def setup(self):
-        for y in range(5):
-            self.grades.append(Grade(self.frame, self))
-            self.grades[-1].pack(fill="x")
+        with open("./data.json", 'r') as file:
+            data = json.load(file)
+            if len(data["subjects"]) == 0:
+                for y in range(5):
+                    self.grades.append(Grade(self.frame, self))
+                    self.grades[-1].pack(fill="x")
+            else:
+                for y in data["subjects"]:
+                    print(y)
+                    self.grades.append(Grade(self.frame, self))
+                    self.grades[-1].pack()
+                    self.grades[-1].weightvar.set(y["weight"])
+                    self.grades[-1].gradevar.set(y["grade"])
+                    self.grades[-1].namevar.set(y["name"])
+                    self.grades[-1].datevar.set(y["date"])
+                    self.grades[-1].update()
+                    self.calc()
+
 
     def add(self):
         self.grades.append(Grade(self.frame, self))
@@ -58,10 +76,11 @@ class Subject(tk.Tk):
     def remove(self):
         try:
             self.grades[-1].destroy()
-            self.grades.pop(len(self.grades)-1)
+            self.grades.pop(len(self.grades) - 1)
             self.calc()
         except IndexError as error:
             print(error)
+
 
     def calc(self):
         grade_sum = 0
@@ -81,10 +100,19 @@ class Subject(tk.Tk):
         else:
             self.result.set(f"")
 
+    def save(self):
+        with open("./data.json", 'r') as file:
+            data = json.load(file)
+            data["subjects"] = []
+            for i in self.grades:
+                data["subjects"].append({"weight": i.weight_field.get(), "grade": i.grade_field.get(), "name": i.name_field.get(), "date": i.date_field.get()})
+        with open("./data.json", 'w') as file:
+            json.dump(data, file, indent=2)
+        self.destroy()
 
 
 if __name__ == "__main__":
-    root = Subject()
+    root = Subject("Deutsch")
     root.mainloop()
 
 
