@@ -1,26 +1,21 @@
 {
   "subjects": [
     {
+      "weight": "1.0",
       "name": "deutsch",
-      "average": "3.5",
+      "average": "4.0",
       "grades": [
         {
-          "weight": "2.0",
-          "grade": "5.0",
-          "name": "erster test",
-          "date": "11.09.2001"
-        },
-        {
           "weight": "1.0",
-          "grade": "3.0",
-          "name": "zweiter test",
-          "date": "16.09.2001"
-        },
-        {
-          "weight": "1.0",
-          "grade": "4.0",
-          "name": "niggas crazy",
+          "grade": "6.0",
+          "name": "nigga balls",
           "date": "16.06.2024"
+        },
+        {
+          "weight": "2.0",
+          "grade": "3.0",
+          "name": "911",
+          "date": "11.09.2001"
         }
       ]
     }

@@ -1,3 +1,4 @@
+import json
 import tkinter as tk
 from subject import Subject
 
@@ -29,6 +30,18 @@ class Menu(tk.Tk):
 
         #Subjects
         self.subjects = []
+        self.setup()
+
+    def setup(self):
+        with open("./data.json", 'r') as file:
+            data = json.load(file)
+            for y in data["subjects"]:
+                self.subjects.append(SubjectContainer(self.frame, self, y["name"]))
+                self.subjects[-1].pack()
+                self.subjects[-1].weightvar.set(y["weight"])
+                self.subjects[-1].gradevar.set(y["average"])
+                self.subjects[-1].namevar.set(y["name"])
+                self.subjects[-1].update()
 
     def add(self):
         top = tk.Toplevel(self)

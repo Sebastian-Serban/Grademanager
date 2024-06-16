@@ -52,12 +52,13 @@ class Subject(tk.Toplevel):
     def setup(self):
         with open("./data.json", 'r') as file:
             data = json.load(file)
-            if len(data["subjects"]) == 0:
+            subject_index = [i for i in range(len(data["subjects"])) if data["subjects"][i]["name"] == self.name][0]
+            if len(data["subjects"][subject_index]["grades"]) == 0:
                 for y in range(5):
                     self.grades.append(Grade(self.frame, self))
                     self.grades[-1].pack(fill="x")
             else:
-                for y in data["subjects"]:
+                for y in data["subjects"][subject_index]["grades"]:
                     print(y)
                     self.grades.append(Grade(self.frame, self))
                     self.grades[-1].pack()
@@ -67,7 +68,6 @@ class Subject(tk.Toplevel):
                     self.grades[-1].datevar.set(y["date"])
                     self.grades[-1].update()
                     self.calc()
-
 
     def add(self):
         self.grades.append(Grade(self.frame, self))
@@ -103,9 +103,11 @@ class Subject(tk.Toplevel):
     def save(self):
         with open("./data.json", 'r') as file:
             data = json.load(file)
-            data["subjects"] = []
+            subject_index = [i for i in range(len(data["subjects"])) if data["subjects"][i]["name"] == self.name][0]
+            data["subjects"][subject_index]["grades"] = []
             for i in self.grades:
-                data["subjects"].append({"weight": i.weight_field.get(), "grade": i.grade_field.get(), "name": i.name_field.get(), "date": i.date_field.get()})
+                data["subjects"][subject_index]["grades"].append({"weight": i.weight_field.get(), "grade": i.grade_field.get(), "name": i.name_field.get(), "date": i.date_field.get()})
+                data["subjects"][subject_index]["average"] = self.average["text"]
         with open("./data.json", 'w') as file:
             json.dump(data, file, indent=2)
         self.destroy()
