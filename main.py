@@ -64,6 +64,13 @@ class Menu(tk.Tk):
         def save_and_close():
             name = namevar.get()
             if name:
+                with open("./data.json", 'r') as file:
+                    data = json.load(file)
+                    data["subjects"].append({"weight": "1.0", "name": name, "average": "", "grades": []})
+
+                with open("./data.json", 'w') as file:
+                    json.dump(data, file, indent=2)
+
                 self.subjects.append(SubjectContainer(self.frame, self, name))
                 self.subjects[-1].pack(fill="x")
                 self.subjects[-1].update()
@@ -115,6 +122,7 @@ class SubjectContainer(tk.Frame):
         self.weightvar.trace("w", self.update)
         self.weight_field = tk.Entry(self.weight_container, name="weight", font='Helvetica 15', width=7,
                                      textvariable=self.weightvar)
+        self.weight_field.bind('<FocusIn>', highlight_text)
         self.weight_label.grid(column=0, row=0, padx=(0, 12))
         self.weight_field.grid(column=1, row=0, padx=(0, 7))
 
@@ -133,6 +141,10 @@ class SubjectContainer(tk.Frame):
     def view_grades(self):
         top = Subject(self.name)
         top.grab_set()
+        self.window.wait_window(top)
+        with open("./data.json", 'r') as file:
+            data = json.load(file)
+            self.gradevar.set(data["subjects"][int(self.id.cget("text")) - 1]["average"])
 
     def edit_subject(self):
         top = tk.Toplevel(self)
@@ -149,18 +161,33 @@ class SubjectContainer(tk.Frame):
         top.name_label = tk.Label(top.header, text="Name", font='Helvetica 15')
         namevar = tk.StringVar(value=self.name if self.name else "")
         top.name_field = tk.Entry(top.header, name="name", font='Helvetica 15', width=15, textvariable=namevar)
+        top.name_field.bind('<FocusIn>', highlight_text)
         top.name_label.grid(column=0, row=0)
         top.name_field.grid(column=1, row=0, padx=(10, 0))
 
         def save_and_close():
             name = namevar.get()
             if name:
+                with open("./data.json", 'r') as file:
+                    data = json.load(file)
+                    data["subjects"][int(self.id.cget("text")) - 1]["name"] = name
+
+                with open("./data.json", 'w') as file:
+                    json.dump(data, file, indent=2)
+
                 self.name = name
                 self.namevar.set(name)
                 self.name_field.config(textvariable=self.namevar)
                 top.destroy()
 
         def delete_and_close():
+            with open("./data.json", 'r') as file:
+                data = json.load(file)
+                data["subjects"].pop(int(self.id.cget("text")) - 1)
+
+            with open("./data.json", 'w') as file:
+                json.dump(data, file, indent=2)
+
             self.window.subjects.pop(int(self.id.cget("text")) - 1)
             self.destroy()
             top.destroy()
@@ -176,6 +203,10 @@ class SubjectContainer(tk.Frame):
         top.delete_button = tk.Button(button_frame, font='Helvetica 15', text="Delete", command=delete_and_close)
         top.delete_button.grid(column=1, row=0, padx=(10, 0))
 
+
+def highlight_text(event):
+    event.widget.select_range(0, 'end')
+    event.widget.icursor('end')
 
 if __name__ == "__main__":
     root = Menu()

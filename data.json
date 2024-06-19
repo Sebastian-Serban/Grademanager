@@ -2,20 +2,38 @@
   "subjects": [
     {
       "weight": "1.0",
-      "name": "deutsch",
+      "name": "Mathe",
       "average": "4.0",
       "grades": [
         {
           "weight": "1.0",
           "grade": "6.0",
-          "name": "nigga balls",
-          "date": "16.06.2024"
+          "name": "",
+          "date": "19.06.2024"
+        },
+        {
+          "weight": "1.0",
+          "grade": "6.0",
+          "name": "",
+          "date": "19.06.2024"
         },
         {
           "weight": "2.0",
           "grade": "3.0",
-          "name": "911",
-          "date": "11.09.2001"
+          "name": "",
+          "date": "19.06.2024"
+        },
+        {
+          "weight": "1.0",
+          "grade": "4.5",
+          "name": "",
+          "date": "19.06.2024"
+        },
+        {
+          "weight": "1.0",
+          "grade": "2.0",
+          "name": "naah bru",
+          "date": "19.06.2024"
         }
       ]
     }

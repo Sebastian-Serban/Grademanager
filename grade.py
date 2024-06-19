@@ -22,6 +22,7 @@ class Grade(tk.Frame):
         self.gradevar = tk.StringVar(value=self.grade)
         self.gradevar.trace("w", self.update)
         self.grade_field = tk.Entry(self.grade_container, name="note", font='Helvetica 15', width=7, textvariable=self.gradevar)
+        self.grade_field.bind('<FocusIn>', highlight_text)
         self.grade_label.grid(column=0, row=0, padx=(0, 12))
         self.grade_field.grid(column=1, row=0, padx=(0, 7))
 
@@ -32,6 +33,7 @@ class Grade(tk.Frame):
         self.weightvar = tk.StringVar(value=self.weight)
         self.weightvar.trace("w", self.update)
         self.weight_field = tk.Entry(self.weight_container, name="weight", font='Helvetica 15', width=7, textvariable=self.weightvar)
+        self.weight_field.bind('<FocusIn>', highlight_text)
         self.weight_label.grid(column=0, row=0, padx=(0, 12))
         self.weight_field.grid(column=1, row=0, padx=(0, 7))
 
@@ -42,6 +44,7 @@ class Grade(tk.Frame):
         self.datevar = tk.StringVar(value=self.date)
         self.datevar.trace("w", self.update)
         self.date_field = tk.Entry(self.date_container, name="date", font='Helvetica 15', width=10, textvariable=self.datevar)
+        self.date_field.bind('<FocusIn>', highlight_text)
         self.date_label.grid(column=0, row=0, padx=(0, 12))
         self.date_field.grid(column=1, row=0, padx=(0, 7))
 
@@ -52,6 +55,7 @@ class Grade(tk.Frame):
         self.namevar = tk.StringVar(value=self.name)
         self.namevar.trace("w", self.update)
         self.name_field = tk.Entry(self.name_container, name="name", font='Helvetica 15', textvariable=self.namevar)
+        self.name_field.bind('<FocusIn>', highlight_text)
         self.name_label.grid(column=0, row=0, padx=(0, 12))
         self.name_field.grid(column=1, row=0, padx=(0, 7), sticky="e")
 
@@ -66,3 +70,8 @@ class Grade(tk.Frame):
         self.grade_field.config(bg="brown1" if not self.grade.replace(".", "").isnumeric() and len(self.grade) else "white")
 
         self.window.calc()
+
+
+def highlight_text(event):
+    event.widget.select_range(0, 'end')
+    event.widget.icursor('end')

@@ -59,7 +59,6 @@ class Subject(tk.Toplevel):
                     self.grades[-1].pack(fill="x")
             else:
                 for y in data["subjects"][subject_index]["grades"]:
-                    print(y)
                     self.grades.append(Grade(self.frame, self))
                     self.grades[-1].pack()
                     self.grades[-1].weightvar.set(y["weight"])
@@ -107,15 +106,16 @@ class Subject(tk.Toplevel):
             data["subjects"][subject_index]["grades"] = []
             for i in self.grades:
                 data["subjects"][subject_index]["grades"].append({"weight": i.weight_field.get(), "grade": i.grade_field.get(), "name": i.name_field.get(), "date": i.date_field.get()})
-                data["subjects"][subject_index]["average"] = self.average["text"]
+            data["subjects"][subject_index]["average"] = self.average["text"]
         with open("./data.json", 'w') as file:
             json.dump(data, file, indent=2)
         self.destroy()
 
 
-if __name__ == "__main__":
-    root = Subject("Deutsch")
-    root.mainloop()
+def highlight_text(event):
+    event.widget.select_range(0, 'end')
+    event.widget.icursor('end')
+
 
 
 
