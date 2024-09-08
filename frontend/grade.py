@@ -65,7 +65,6 @@ class Grade(tk.Frame):
         self.name = self.name_field.get()
         self.date = self.date_field.get()
 
-        # validation
         self.weight_field.config(bg="brown1" if not self.weight.replace(".", "").isnumeric() else "white")
         self.grade_field.config(bg="brown1" if not self.grade.replace(".", "").isnumeric() and len(self.grade) else "white")
 

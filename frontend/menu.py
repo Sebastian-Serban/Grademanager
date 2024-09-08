@@ -1,3 +1,5 @@
+import requests
+
 from subject import Subject
 import tkinter as tk
 import json
@@ -11,32 +13,27 @@ class Menu(tk.Tk):
         self.minsize(800, 700)
         self.resizable(True, True)
 
-        # Configure grid to make it scalable
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=0)
         self.grid_rowconfigure(2, weight=1)
 
-        # Header Frame
         self.header = tk.Frame(self)
         self.header.grid(column=0, row=0, sticky="ew", pady=(0, 10))
         self.header.grid_columnconfigure(0, weight=1)
 
-        # Title Label
-        self.label = tk.Label(self.header, text="Welcome to the Grade Manager", font='Helvetica 25')
+        self.label = tk.Label(self.header, text="Subjects", font='Helvetica 25')
         self.label.grid(column=0, row=0, pady=(10, 0))
 
-        # Buttons Container Frame
         self.button_container = tk.Frame(self.header)
         self.button_container.grid(column=0, row=1, pady=(10, 10))
         self.button_container.grid_columnconfigure(0, weight=1)
 
-        # Add Subject Button
         self.add_button = tk.Button(self.button_container, text='Add Subject', font='Helvetica 15')
         self.add_button['command'] = self.add
         self.add_button.pack(fill='x', expand=True)
 
-        # Subject container
+
         self.canvas = tk.Canvas(self)
         self.canvas.grid(column=0, row=2, sticky="nsew")
 
@@ -52,9 +49,21 @@ class Menu(tk.Tk):
         self.scrollable_frame.bind("<Configure>", self.on_frame_configure)
         self.canvas.bind('<Configure>', self.on_canvas_configure)
 
-        # Subjects list
+        self.upload_button = tk.Button(self, font='Helvetica 15', text="Save", command=self.upload)
+        self.upload_button.grid(column=0, row=3)
+        self.upload_button.grid_rowconfigure(index=3, weight=1)
+
         self.subjects = []
         self.setup()
+
+    def upload(self):
+        with open("data.json", "r") as json_data:
+            data = json.load(json_data)
+
+        response = requests.put("http://localhost:5000/save", json=data["subjects"])
+        self.destroy()
+        return response.json()
+
 
     def on_frame_configure(self, event=None):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
@@ -173,6 +182,8 @@ class SubjectContainer(tk.Frame):
 
         self.view_button = tk.Button(self, text="🔍", font='Helvetica 15', relief="raised", command=self.view_grades)
         self.view_button.grid(column=5, row=0, sticky="nsew")
+
+
 
     def update(self, *args):
         self.weight = self.weight_field.get()

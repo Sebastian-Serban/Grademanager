@@ -1,6 +1,7 @@
 # Grademanager
 
-To try out run the main.py file
+To try it out run both python files
 ```bash
-python main.py
+python ./frontend/main.py 
+python ./backend/app.py
 ```

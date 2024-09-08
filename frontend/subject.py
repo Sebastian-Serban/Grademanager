@@ -1,5 +1,5 @@
 import tkinter as tk
-from grade import Grade
+from frontend.grade import Grade
 import json
 
 
@@ -50,7 +50,7 @@ class Subject(tk.Toplevel):
         self.save_button.grid()
 
     def setup(self):
-        with open("./data.json", 'r') as file:
+        with open("data.json", 'r') as file:
             data = json.load(file)
             subject_index = [i for i in range(len(data["subjects"])) if data["subjects"][i]["name"] == self.name][0]
             if len(data["subjects"][subject_index]["grades"]) == 0:
@@ -100,14 +100,14 @@ class Subject(tk.Toplevel):
             self.result.set(f"")
 
     def save(self):
-        with open("./data.json", 'r') as file:
+        with open("data.json", 'r') as file:
             data = json.load(file)
             subject_index = [i for i in range(len(data["subjects"])) if data["subjects"][i]["name"] == self.name][0]
             data["subjects"][subject_index]["grades"] = []
             for i in self.grades:
                 data["subjects"][subject_index]["grades"].append({"weight": i.weight_field.get(), "grade": i.grade_field.get(), "name": i.name_field.get(), "date": i.date_field.get()})
             data["subjects"][subject_index]["average"] = self.average["text"]
-        with open("./data.json", 'w') as file:
+        with open("data.json", 'w') as file:
             json.dump(data, file, indent=2)
         self.destroy()
 
