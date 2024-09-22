@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from supabase import create_client
+import hashlib
 
 app = Flask(__name__)
 
@@ -13,7 +14,7 @@ def get_user(username, password):
         supabase.table("users")
         .select("subjects")
         .eq("username", username)
-        .eq("password", password)
+        .eq("password", hashlib.sha256(password.encode()).hexdigest())
         .execute())
 
     if response.data:
@@ -41,7 +42,7 @@ def add_user(username, password):
     if len(user.data) == 0:
         response = (
             supabase.table("users")
-            .insert({"username": username, "password": password, "subjects": []})
+            .insert({"username": username, "password": str(hashlib.sha256(password.encode()).hexdigest()), "subjects": []})
             .execute())
 
         global name

@@ -97,6 +97,7 @@ class Login(tk.Tk):
         password = self.password_register_entry.get()
         response = requests.post(f'http://localhost:5000/register/{username}/{password}')
 
+        print(response)
         if not username or not password:
             messagebox.showerror("Registration Failed", "Both fields are required.")
             return
