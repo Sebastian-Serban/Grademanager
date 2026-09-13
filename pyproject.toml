@@ -1,0 +1,38 @@
+[project]
+name = "grademanager"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Sebastian-Serban", email = "81688773+Sebastian-Serban@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "django>=6.1.1",
+    "django-environ>=0.14.0",
+    "djangorestframework>=3.18.1",
+]
+
+[project.scripts]
+grademanager = "grademanager:main"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-django>=4.14.0",
+    "ruff>=0.16.7",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "DJ"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py", "tests.py"]
